@@ -1,0 +1,104 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  passwordHash String
+  createdAt    DateTime @default(now())
+
+  completions TaskCompletion[]
+  auditLogs   AuditLog[]
+}
+
+model ControlCategory {
+  id          String  @id @default(cuid())
+  code        String  @unique
+  name        String
+  description String?
+  framework   String  // "SOC2" | "HIPAA" | "BOTH"
+  sortOrder   Int     @default(0)
+
+  tasks TaskTemplate[]
+}
+
+model TaskTemplate {
+  id               String   @id @default(cuid())
+  title            String
+  description      String?
+  categoryId       String
+  frequency        String   // "QUARTERLY" | "SEMI_ANNUAL" | "ANNUAL"
+  isSOC2           Boolean  @default(false)
+  isHIPAA          Boolean  @default(false)
+  isCommon         Boolean  @default(false)
+  isActive         Boolean  @default(true)
+  requiresApproval Boolean  @default(false)
+  createdAt        DateTime @default(now())
+
+  category  ControlCategory @relation(fields: [categoryId], references: [id])
+  instances TaskInstance[]
+}
+
+model TaskInstance {
+  id          String   @id @default(cuid())
+  templateId  String
+  periodLabel String   // "Q1 2026", "H1 2026", "2026"
+  dueDate     DateTime
+  createdAt   DateTime @default(now())
+
+  template   TaskTemplate    @relation(fields: [templateId], references: [id])
+  completion TaskCompletion?
+
+  @@unique([templateId, periodLabel])
+}
+
+model TaskCompletion {
+  id            String    @id @default(cuid())
+  instanceId    String    @unique
+  userId        String
+  completedAt   DateTime  @default(now())
+  notes         String?
+  approverName  String?
+  approverTitle String?
+  approverTeam  String?
+  approvedAt    DateTime?
+
+  instance TaskInstance @relation(fields: [instanceId], references: [id])
+  user     User         @relation(fields: [userId], references: [id])
+  evidence Evidence[]
+}
+
+model Evidence {
+  id           String   @id @default(cuid())
+  completionId String
+  filename     String
+  originalName String
+  mimeType     String
+  fileSize     Int
+  filePath     String
+  uploadedAt   DateTime @default(now())
+
+  completion TaskCompletion @relation(fields: [completionId], references: [id], onDelete: Cascade)
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  userId     String?
+  userEmail  String?
+  userName   String?
+  action     String
+  entityType String
+  entityId   String?
+  details    Json?
+  ipAddress  String?
+  createdAt  DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id])
+}
