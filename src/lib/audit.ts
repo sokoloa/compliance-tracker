@@ -13,9 +13,19 @@ interface AuditEntry {
 
 export async function logAudit(entry: AuditEntry) {
   try {
-    await db.auditLog.create({ data: entry });
+    await db.auditLog.create({
+      data: {
+        userId: entry.userId ?? null,
+        userEmail: entry.userEmail ?? null,
+        userName: entry.userName ?? null,
+        action: entry.action,
+        entityType: entry.entityType,
+        entityId: entry.entityId ?? null,
+        details: entry.details ?? undefined,
+        ipAddress: entry.ipAddress ?? null,
+      },
+    });
   } catch (err) {
-    // Don't let audit failures break the main flow
     console.error("Audit log failed:", err);
   }
 }
