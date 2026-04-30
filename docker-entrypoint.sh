@@ -2,13 +2,13 @@
 set -e
 
 echo "Running database schema push..."
-npx prisma db push --skip-generate
+node node_modules/prisma/build/index.js db push
 
 echo "Seeding task library..."
 if [ -f "dist-seed/prisma/seed.js" ]; then
   node dist-seed/prisma/seed.js && echo "Seed complete."
 else
-  echo "Compiled seed not found — skipping. Run 'npm run db:seed' manually if first boot."
+  echo "Compiled seed not found — skipping."
 fi
 
 echo "Starting application..."
