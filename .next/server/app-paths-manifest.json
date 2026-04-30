@@ -1,0 +1,17 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/setup/route": "app/api/setup/route.js",
+  "/api/evidence/[id]/route": "app/api/evidence/[id]/route.js",
+  "/api/tasks/[id]/complete/route": "app/api/tasks/[id]/complete/route.js",
+  "/api/evidence/[id]/preview/route": "app/api/evidence/[id]/preview/route.js",
+  "/api/library/[id]/route": "app/api/library/[id]/route.js",
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/setup/page": "app/setup/page.js",
+  "/page": "app/page.js",
+  "/(auth)/login/page": "app/(auth)/login/page.js",
+  "/(protected)/tasks/page": "app/(protected)/tasks/page.js",
+  "/(protected)/library/page": "app/(protected)/library/page.js",
+  "/(protected)/tasks/[id]/page": "app/(protected)/tasks/[id]/page.js",
+  "/(protected)/dashboard/page": "app/(protected)/dashboard/page.js",
+  "/(protected)/audit-log/page": "app/(protected)/audit-log/page.js"
+}

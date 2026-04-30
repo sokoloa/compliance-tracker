@@ -21,7 +21,7 @@ export async function logAudit(entry: AuditEntry) {
         action: entry.action,
         entityType: entry.entityType,
         entityId: entry.entityId ?? null,
-        details: entry.details ?? undefined,
+        details: entry.details ? JSON.parse(JSON.stringify(entry.details)) : undefined,
         ipAddress: entry.ipAddress ?? null,
       },
     });
