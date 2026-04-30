@@ -44,6 +44,7 @@
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
+    "autoprefixer": "^10.4.20",
     "@types/node": "^20",
     "@types/papaparse": "^5.3.15",
     "@types/react": "^19",
