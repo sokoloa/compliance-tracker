@@ -84,7 +84,7 @@ export default async function AuditLogPage({
             {logs.map((log) => {
               const meta = ACTION_META[log.action];
               const Icon = meta?.Icon ?? FileText;
-              const details = log.details as Record<string, unknown> | null;
+              const details = log.details as Record<string, string | number | boolean | null | undefined> | null;
 
               return (
                 <div key={log.id} className="flex items-start gap-4 px-5 py-4">
