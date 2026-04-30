@@ -12,6 +12,7 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npx prisma generate
+RUN mkdir -p public
 # Compile seed to plain JS so we can run it without tsx in production
 RUN npx tsc --module commonjs --target es2020 --esModuleInterop true \
     --moduleResolution node --outDir dist-seed --skipLibCheck \
